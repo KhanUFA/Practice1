@@ -5,7 +5,7 @@ import some.Shape;
 
 public class Magazine extends Item {
 
-    public Magazine(String name, int weight, int size, String color) {
+    public Magazine(String name, double weight, int size, String color) {
         super(name, Shape.FLAT, weight, size, color);
     }
 }
