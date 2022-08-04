@@ -1,7 +1,7 @@
 package some;
 
 public interface Storable {
-    boolean add(Object item);
-    boolean remove(Object item);
-    Object get();
+    boolean add(Item item);
+    boolean remove(Item item);
+    Item get();
 }

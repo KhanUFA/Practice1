@@ -2,10 +2,11 @@ package some;
 
 public abstract class Item {
 
-    String name, color;
-    int size;
-    double weight;
-    Shape shape;
+    private String name, color;
+    private final int size;
+    private final double weight;
+    private final Shape shape;
+    private boolean stored;
 
     public Item(String name, Shape shape, double weight, int size, String color) throws IllegalArgumentException{
         //Проверка Стринг и Shape на null + Максимальный вес и размер
@@ -17,6 +18,7 @@ public abstract class Item {
         this.weight = weight;
         this.size = size;
         this.color = color;
+        this.stored = false;
     }
 
     public String getName() {
@@ -37,6 +39,14 @@ public abstract class Item {
 
     public Shape getShape() {
         return shape;
+    }
+
+    public boolean isStored() {
+        return stored;
+    }
+
+    public void setStored(boolean stored) {
+        this.stored = stored;
     }
 
     @Override
