@@ -4,39 +4,35 @@ import some.Item;
 import some.Shape;
 import some.Storable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-public class Bag extends Item implements Storable {
-    private final List<Item> space;
-    private final int MAX_WEIGHT;
+public class Shelf extends Item implements Storable {
+    private final Deque<Item> space;
+    private final double MAX_WEIGHT;
 
-    public Bag(String name, double weight, int maxSize) throws IllegalArgumentException {
-        super(name, Shape.RECTANGLE, weight, maxSize, "brown");
+    public Shelf(String name, Shape shape, double weight, int maxSize, String color) throws IllegalArgumentException {
+        super(name, shape, weight, maxSize, color);
 
-        space = new ArrayList<>();
         MAX_WEIGHT = maxSize;
-    }
-
-    @Override
-    public Item search(String name){
-        for (Item item:
-                space) {
-            if(item.getName().equals(name)){
-                return item;
-            }
-        }
-        return null;
+        space = new ArrayDeque<Item>();
     }
 
     @Override
     public boolean add(Item item) {
-        if(item != null && !item.isStored() && getWeight() < MAX_WEIGHT){
+        if(item != null && !item.isStored() && getWeight() + item.getWeight() < MAX_WEIGHT){
+            if(item.getShape() != Shape.ROUND){
             item.setStored(true);
-            space.add(item);
+            space.push(item);
             System.out.println("Предмет добавлен");
             return true;
+            } else {
+                Item itemOnTop = space.peek();
+                if (itemOnTop.getShape() == Shape.ROUND) {
+                    System.out.println("Нельзя положить " + item.getName() + " .Мешает " + itemOnTop.getName());
+                    return false;
+                }
+            }
         } else {
             if(item.isStored()){
                 System.out.println("Предмет уже где-то лежит");
@@ -45,12 +41,13 @@ public class Bag extends Item implements Storable {
             System.out.println("Предмет не добавлен превышен максимальный вес");
             return false;
         }
+        return false;
     }
 
     @Override
     public boolean remove(Item item) {
         if(item != null){
-            space.remove(item);
+            space.pop();
             item.setStored(false);
             return true;
         }
@@ -59,22 +56,12 @@ public class Bag extends Item implements Storable {
 
     @Override
     public Item get() {
-        Random random = new Random(10);
-        int index = random.nextInt(space.size());
-
-        return space.get(index);
+        return space.peek();
     }
 
     @Override
-    public double getWeight() {
-        double sumWeight = super.getWeight();
-
-        for (Item item:
-             space) {
-            sumWeight += item.getWeight();
-        }
-
-        return sumWeight;
+    public Item search(String name) {
+        return space.peek();
     }
 
     @Override

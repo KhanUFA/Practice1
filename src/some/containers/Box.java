@@ -4,28 +4,23 @@ import some.Item;
 import some.Shape;
 import some.Storable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class Bag extends Item implements Storable {
-    private final List<Item> space;
+public class Box extends Item implements Storable {
+
+    private final Map<String, Item> space;
     private final int MAX_WEIGHT;
 
-    public Bag(String name, double weight, int maxSize) throws IllegalArgumentException {
+    public Box(String name, double weight, int maxSize) throws IllegalArgumentException {
         super(name, Shape.RECTANGLE, weight, maxSize, "brown");
-
-        space = new ArrayList<>();
+        space = new HashMap<>();
         MAX_WEIGHT = maxSize;
     }
 
     @Override
     public Item search(String name){
-        for (Item item:
-                space) {
-            if(item.getName().equals(name)){
-                return item;
-            }
+        if(!space.isEmpty()) {
+            return space.get(name);
         }
         return null;
     }
@@ -34,7 +29,7 @@ public class Bag extends Item implements Storable {
     public boolean add(Item item) {
         if(item != null && !item.isStored() && getWeight() < MAX_WEIGHT){
             item.setStored(true);
-            space.add(item);
+            space.put(item.getName(), item);
             System.out.println("Предмет добавлен");
             return true;
         } else {
@@ -42,7 +37,7 @@ public class Bag extends Item implements Storable {
                 System.out.println("Предмет уже где-то лежит");
                 return false;
             }
-            System.out.println("Предмет не добавлен превышен максимальный вес");
+                System.out.println("Предмет не добавлен превышен максимальный вес");
             return false;
         }
     }
@@ -70,7 +65,7 @@ public class Bag extends Item implements Storable {
         double sumWeight = super.getWeight();
 
         for (Item item:
-             space) {
+                space.values()) {
             sumWeight += item.getWeight();
         }
 

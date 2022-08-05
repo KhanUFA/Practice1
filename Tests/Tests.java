@@ -28,13 +28,42 @@ public class Tests{
         Item ball = new Ball("Мяч", 5.5, 4, "green");
         Item bigBall = new Ball("Мячище", 5, 4, "green");
         Item MyBall = new Ball("Мячик", 5, 1, "green");
+        Storable bag = new Bag("Яндекс.Доставка", 0.5, 10);
+
+        Storable bagDelivery = new Bag("Деливери", 0.5, 10);
+
+        bag.add(ball);
+        //bag.add(bigBall);
+        //bag.add(MyBall);
+        bagDelivery.add((Item) bag);
+        double bagDeliveryWeight = bagDelivery.getWeight();
+        assertEquals(6., bag.getWeight());
+        assertEquals(6.5, bagDeliveryWeight);
+
+        System.out.println(bagDeliveryWeight);
+    }
+
+    @Test
+    void checkSearchMethod(){
+        Item ball = new Ball("Мяч", 5.5, 4, "green");
+        Item bigBall = new Ball("Мячище", 5, 4, "green");
+        Item myBall = new Ball("Мячик", 5, 1, "green");
         Storable bag = new Bag("Яндекс.Доставка", 0.5, 40);
 
         bag.add(ball);
         bag.add(bigBall);
-        bag.add(MyBall);
+        bag.add(myBall);
 
-        assertEquals(16., bag.getWeight());
-        System.out.println(bag.get().getName());
+        assertEquals(myBall, bag.search("Мячик"));
+    }
+
+    @Test
+    void checkAddSameObject(){
+        Item ball = new Ball("Мяч", 5.5, 4, "green");
+        Storable bag = new Bag("Яндекс.Доставка", 0.5, 40);
+
+        bag.add(ball);
+
+        assertFalse(bag.add(ball));
     }
 }

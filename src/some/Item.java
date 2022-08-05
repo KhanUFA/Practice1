@@ -2,11 +2,11 @@ package some;
 
 public abstract class Item {
 
-    protected String name, color;
-    protected final int size;
-    protected final double weight;
-    protected final Shape shape;
-    protected boolean stored;
+    private String name, color;
+    private final int size;
+    private final double weight;
+    private final Shape shape;
+    private boolean stored;
 
     public Item(String name, Shape shape, double weight, int size, String color) throws IllegalArgumentException{
         checkArguments(name, shape, weight, size, color);
@@ -60,7 +60,7 @@ public abstract class Item {
         return stored;
     }
 
-    protected void setStored(boolean stored) {
+    public void setStored(boolean stored) {
         this.stored = stored;
     }
 
