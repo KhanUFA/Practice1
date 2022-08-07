@@ -92,7 +92,7 @@ public class Tests{
     @Test
     void checkRemoveMethod(){
         Item ball = new Ball("Мяч", 5.5, 4, "green");
-        Item magazine = new Magazine("The Rolling Stones", 0.225, 40, "green");
+        Item magazine = new Magazine("The Rolling Stones", 0.225, 2, "green");
         Storable bag = new Bag("Яндекс.Доставка", 0.5, 40);
 
         try {
@@ -108,8 +108,8 @@ public class Tests{
     @Test
     void checkShelfLogic (){
         Item ball = new Ball("Мяч", 5.5, 4, "green");
-        Item magazine = new Magazine("The Rolling Stones", 0.225, 40, "green");
-        Item brick = new Brick("Башкирский кирпич", 1.2, 10, "red");
+        Item magazine = new Magazine("The Rolling Stones", 0.225, 2, "green");
+        Item brick = new Brick("Башкирский кирпич", 1.2, 5, "red");
         Storable shelf = new Shelf("Shhonka",1,8,"grey");
 
         try {
@@ -119,7 +119,7 @@ public class Tests{
             });
 
             //A round object on another item. Now we put on the round object another object
-            shelf.remove(ball);
+            shelf.get();
             shelf.add(magazine);
             shelf.add(ball);
             assertThrows(StoringItemException.class, () -> {
