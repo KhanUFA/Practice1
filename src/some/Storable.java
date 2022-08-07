@@ -1,7 +1,10 @@
 package some;
 
+import some.exceptions.ItemAlreadyPlacedException;
+import some.exceptions.StoringItemException;
+
 public interface Storable {
-    boolean add(Item item);
+    void add(Item item) throws ItemAlreadyPlacedException, StoringItemException;
     boolean remove(Item item);
     Item get();
     Item search(String name);
@@ -20,5 +23,15 @@ public interface Storable {
         if (size < 0) {
             throw new IllegalArgumentException("Размер не может быть меньше или равен нулю!");
         }
+    }
+
+    default void checkStoringConditions(Item item) throws StoringItemException, ItemAlreadyPlacedException {
+        if(item.isStored()){
+            throw new ItemAlreadyPlacedException("Предмет уже где-то лежит");
+        }
+        if(item == this){
+            throw new StoringItemException("Нельзя положить предмет самого в себя");
+        }
+        throw new StoringItemException("Предмет не добавлен превышен максимальный вес");
     }
 }

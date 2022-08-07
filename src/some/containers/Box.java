@@ -3,6 +3,8 @@ package some.containers;
 import some.Item;
 import some.Shape;
 import some.Storable;
+import some.exceptions.ItemAlreadyPlacedException;
+import some.exceptions.StoringItemException;
 
 import java.util.*;
 
@@ -26,19 +28,13 @@ public class Box extends Item implements Storable {
     }
 
     @Override
-    public boolean add(Item item) {
-        if(item != null && !item.isStored() && getWeight() < MAX_WEIGHT){
+    public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
+        if(item != null && item != this && !item.isStored() && item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight())){
             item.setStored(true);
             space.put(item.getName(), item);
             System.out.println("Предмет добавлен");
-            return true;
         } else {
-            if(item.isStored()){
-                System.out.println("Предмет уже где-то лежит");
-                return false;
-            }
-                System.out.println("Предмет не добавлен превышен максимальный вес");
-            return false;
+            checkStoringConditions(item);
         }
     }
 
