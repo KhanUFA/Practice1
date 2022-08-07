@@ -32,7 +32,7 @@ public class Box extends Item implements Storable {
         if(item != null && item != this && !item.isStored() && item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight())){
             item.setStored(true);
             space.put(item.getName(), item);
-            System.out.println("Предмет добавлен");
+            System.out.println("Предмет " + item.getName() + " добавлен");
         } else {
             checkStoringConditions(item);
         }
@@ -41,8 +41,9 @@ public class Box extends Item implements Storable {
     @Override
     public boolean remove(Item item) {
         if(item != null){
-            space.remove(item);
+            space.remove(item.getName());
             item.setStored(false);
+            System.out.println("Предмет " + item.getName() + " убран");
             return true;
         }
         return false;

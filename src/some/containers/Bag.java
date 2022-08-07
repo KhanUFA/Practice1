@@ -37,7 +37,7 @@ public class Bag extends Item implements Storable {
         if(item != null && item != this && !item.isStored() && item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight())){
             item.setStored(true);
             space.add(item);
-            System.out.println("Предмет добавлен");
+            System.out.println("Предмет " + item.getName() + " добавлен");
         } else {
             checkStoringConditions(item);
         }
@@ -48,6 +48,7 @@ public class Bag extends Item implements Storable {
         if(item != null){
             space.remove(item);
             item.setStored(false);
+            System.out.println("Предмет " + item.getName() + " убран");
             return true;
         }
         return false;

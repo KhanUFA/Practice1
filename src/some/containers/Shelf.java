@@ -8,6 +8,7 @@ import some.exceptions.StoringItemException;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 
 public class Shelf extends Item implements Storable {
     private final Deque<Item> space;
@@ -23,39 +24,54 @@ public class Shelf extends Item implements Storable {
     @Override
     public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
         if(item != null && item != this && !item.isStored() && item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight())){
-            if(item.getShape() != Shape.ROUND){
-            item.setStored(true);
-            space.push(item);
-            System.out.println("Предмет добавлен");
-            } else {
+            if (space.size() != 0) {
                 Item itemOnTop = space.peek();
                 if (itemOnTop.getShape() == Shape.ROUND) {
-                    System.out.println("Нельзя положить " + item.getName() + " .Мешает " + itemOnTop.getName());
+                    throw new StoringItemException("Нельзя положить " + item.getName() + " на " + itemOnTop.getName());
                 }
             }
+            item.setStored(true);
+            space.push(item);
+            System.out.println("Предмет " + item.getName() + " добавлен");
         } else {
-            checkStoringConditions(item);
+            checkStoringConditions(Objects.requireNonNull(item));
         }
     }
 
     @Override
     public boolean remove(Item item) {
-        if(item != null){
-            space.pop();
-            item.setStored(false);
-            return true;
-        }
+        System.out.println("Я ничего не делаю PepeChill");
         return false;
     }
 
     @Override
     public Item get() {
-        return space.peek();
+        Item item = space.pop();
+        item.setStored(false);
+        System.out.println("Предмет " + item.getName() + " убран");
+        return item;
     }
 
     @Override
     public Item search(String name) {
-        return space.peek();
+        for (Item item:
+                space) {
+            if(item.getName().equals(name)){
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public double getWeight() {
+        double sumWeight = super.getWeight();
+
+        for (Item item:
+                space) {
+            sumWeight += item.getWeight();
+        }
+
+        return sumWeight;
     }
 
     @Override
