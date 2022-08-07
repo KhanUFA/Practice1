@@ -2,7 +2,10 @@ import org.junit.jupiter.api.*;
 import some.Item;
 import some.Storable;
 import some.containers.Bag;
+import some.exceptions.ItemAlreadyPlacedException;
+import some.exceptions.StoringItemException;
 import some.simple.items.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Tests{
@@ -13,6 +16,23 @@ public class Tests{
         });
         assertThrows(IllegalArgumentException.class, () -> {
             Item ball = new Ball(null, 5, 0, "green");
+        }).printStackTrace();
+
+        assertThrows(StoringItemException.class, () -> {
+            Storable bag = new Bag("Яндекс.Доставка", 0.5, 10);
+            bag.add((Item) bag);
+        });
+        assertThrows(StoringItemException.class, () -> {
+            Item ball = new Ball("Баскетбольный мяч", 5, 1, "green");
+            Bag bag = new Bag("Яндекс.Доставка", 0.5, 5);
+            bag.add(ball);
+        });
+
+        assertThrows(ItemAlreadyPlacedException.class, () -> {
+            Item ball = new Ball("Баскетбольный мяч", 5, 1, "green");
+            Bag bag = new Bag("Яндекс.Доставка", 0.5, 10);
+            bag.add(ball);
+            bag.add(ball);
         });
     }
 
@@ -32,10 +52,13 @@ public class Tests{
 
         Storable bagDelivery = new Bag("Деливери", 0.5, 10);
 
-        bag.add(ball);
-        //bag.add(bigBall);
-        //bag.add(MyBall);
-        bagDelivery.add((Item) bag);
+        try {
+            bag.add(ball);
+            bagDelivery.add((Item) bag);
+        } catch (StoringItemException e) {
+            e.printStackTrace();
+        }
+
         double bagDeliveryWeight = bagDelivery.getWeight();
         assertEquals(6., bag.getWeight());
         assertEquals(6.5, bagDeliveryWeight);
@@ -50,20 +73,20 @@ public class Tests{
         Item myBall = new Ball("Мячик", 5, 1, "green");
         Storable bag = new Bag("Яндекс.Доставка", 0.5, 40);
 
-        bag.add(ball);
-        bag.add(bigBall);
-        bag.add(myBall);
+        try {
+            bag.add(ball);
+            bag.add(bigBall);
+            bag.add(myBall);
+        } catch (StoringItemException e) {
+            e.printStackTrace();
+        }
 
         assertEquals(myBall, bag.search("Мячик"));
     }
 
     @Test
-    void checkAddSameObject(){
+    void checkRemoveMethod(){
         Item ball = new Ball("Мяч", 5.5, 4, "green");
         Storable bag = new Bag("Яндекс.Доставка", 0.5, 40);
-
-        bag.add(ball);
-
-        assertFalse(bag.add(ball));
     }
 }
