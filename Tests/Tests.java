@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import some.Item;
 import some.Storable;
 import some.containers.Bag;

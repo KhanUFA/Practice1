@@ -58,7 +58,6 @@ public class Bag extends Item implements Storable {
     public Item get() {
         Random random = new Random(10);
         int index = random.nextInt(space.size());
-
         return space.get(index);
     }
 

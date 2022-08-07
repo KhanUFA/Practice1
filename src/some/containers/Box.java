@@ -54,7 +54,7 @@ public class Box extends Item implements Storable {
         Random random = new Random(10);
         int index = random.nextInt(space.size());
 
-        return space.get(index);
+        return space.get(space.keySet().toArray()[index]);
     }
 
     @Override
