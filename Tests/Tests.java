@@ -93,16 +93,18 @@ public class Tests{
     void checkRemoveMethod(){
         Item ball = new Ball("Мяч", 5.5, 4, "green");
         Item magazine = new Magazine("The Rolling Stones", 0.225, 2, "green");
-        Storable bag = new Bag("Яндекс.Доставка", 0.5, 40);
+        Item brick = new Brick("Башкирский кирпич", 1.2, 5, "red");
+        Storable box = new Box("Яндекс.Доставка", 0.5, 40);
 
         try {
-            bag.add(ball);
-            bag.add(magazine);
+            box.add(ball);
+            box.add(magazine);
+            box.add(brick);
         } catch (StoringItemException e) {
             e.printStackTrace();
         }
 
-        assertTrue(bag.remove(magazine));
+        assertTrue(box.remove(box.get()));
     }
 
     @Test
