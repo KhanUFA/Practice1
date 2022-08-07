@@ -2,6 +2,8 @@ import org.junit.jupiter.api.*;
 import some.Item;
 import some.Storable;
 import some.containers.Bag;
+import some.containers.Box;
+import some.containers.Shelf;
 import some.exceptions.ItemAlreadyPlacedException;
 import some.exceptions.StoringItemException;
 import some.simple.items.*;
@@ -41,6 +43,7 @@ public class Tests{
         Item ball = new Ball("Мяч", 5, 4, "green");
         String expectedString = "Я Мяч Являюсь: ROUND и я green\nМои параметры: 5.0кг, 4см";
         assertEquals(expectedString, ball.toString());
+        System.out.println(ball);
     }
 
     @Test
@@ -48,22 +51,24 @@ public class Tests{
         Item ball = new Ball("Мяч", 5.5, 4, "green");
         Item bigBall = new Ball("Мячище", 5, 4, "green");
         Item MyBall = new Ball("Мячик", 5, 1, "green");
-        Storable bag = new Bag("Яндекс.Доставка", 0.5, 10);
+        Storable box = new Box("Яндекс.Доставка", 0.5, 10);
 
         Storable bagDelivery = new Bag("Деливери", 0.5, 10);
 
         try {
-            bag.add(ball);
-            bagDelivery.add((Item) bag);
-        } catch (StoringItemException e) {
+            box.add(ball);
+            bagDelivery.add((Item) box);
+            double bagDeliveryWeight = bagDelivery.getWeight();
+
+            assertEquals(6., box.getWeight(), 0.0001);
+            assertEquals(6.5, bagDeliveryWeight, 0.0001);
+
+            assertThrows(StoringItemException.class, ()-> {
+                bagDelivery.add(bigBall);
+            }).printStackTrace();
+        } catch (StoringItemException | ItemAlreadyPlacedException e) {
             e.printStackTrace();
         }
-
-        double bagDeliveryWeight = bagDelivery.getWeight();
-        assertEquals(6., bag.getWeight());
-        assertEquals(6.5, bagDeliveryWeight);
-
-        System.out.println(bagDeliveryWeight);
     }
 
     @Test
@@ -77,7 +82,7 @@ public class Tests{
             bag.add(ball);
             bag.add(bigBall);
             bag.add(myBall);
-        } catch (StoringItemException e) {
+        } catch (StoringItemException | ItemAlreadyPlacedException e) {
             e.printStackTrace();
         }
 
@@ -87,6 +92,41 @@ public class Tests{
     @Test
     void checkRemoveMethod(){
         Item ball = new Ball("Мяч", 5.5, 4, "green");
+        Item magazine = new Magazine("The Rolling Stones", 0.225, 40, "green");
         Storable bag = new Bag("Яндекс.Доставка", 0.5, 40);
+
+        try {
+            bag.add(ball);
+            bag.add(magazine);
+        } catch (StoringItemException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(bag.remove(magazine));
+    }
+
+    @Test
+    void checkShelfLogic (){
+        Item ball = new Ball("Мяч", 5.5, 4, "green");
+        Item magazine = new Magazine("The Rolling Stones", 0.225, 40, "green");
+        Item brick = new Brick("Башкирский кирпич", 1.2, 10, "red");
+        Storable shelf = new Shelf("Shhonka",1,8,"grey");
+
+        try {
+            shelf.add(ball);
+            assertThrows(StoringItemException.class, () -> {
+               shelf.add(brick);
+            });
+
+            //A round object on another item. Now we put on the round object another object
+            shelf.remove(ball);
+            shelf.add(magazine);
+            shelf.add(ball);
+            assertThrows(StoringItemException.class, () -> {
+                shelf.add(brick);
+            });
+        } catch (StoringItemException e) {
+            e.printStackTrace();
+        }
     }
 }
