@@ -12,13 +12,13 @@ import java.util.Random;
 
 public class Bag extends Item implements Storable {
     private final List<Item> space;
-    private final int MAX_WEIGHT;
+    private final int maxWeight;
 
-    public Bag(String name, double weight, int maxSize) throws IllegalArgumentException {
-        super(name, Shape.RECTANGLE, weight, maxSize, "brown");
+    public Bag(String name, double weight, int maxWeight) throws IllegalArgumentException {
+        super(name, Shape.RECTANGLE, weight, maxWeight, "brown");
 
         space = new ArrayList<>();
-        MAX_WEIGHT = maxSize;
+        this.maxWeight = maxWeight;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class Bag extends Item implements Storable {
 
     @Override
     public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
-        if(item != null && item != this && !item.isStored() && item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight())){
+        if (item == null || item == this || item.isStored() || !(item.getWeight() <= maxWeight - (getWeight() + super.getWeight()))) {
+            checkStoringConditions(item);
+        } else {
             item.setStored(true);
             space.add(item);
             System.out.println("Предмет " + item.getName() + " добавлен");
-        } else {
-            checkStoringConditions(item);
         }
     }
 

@@ -29,12 +29,12 @@ public class Box extends Item implements Storable {
 
     @Override
     public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
-        if(item != null && item != this && !item.isStored() && item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight())){
+        if (item == null || item == this || item.isStored() || !(item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight()))) {
+            checkStoringConditions(item);
+        } else {
             item.setStored(true);
             space.put(item.getName(), item);
             System.out.println("Предмет " + item.getName() + " добавлен");
-        } else {
-            checkStoringConditions(item);
         }
     }
 

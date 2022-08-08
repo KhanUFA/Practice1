@@ -23,18 +23,19 @@ public class Shelf extends Item implements Storable {
 
     @Override
     public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
-        if(item != null && item != this && !item.isStored() && item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight())){
+        if (item == null || item == this || item.isStored() || !(item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight()))) {
+            checkStoringConditions(Objects.requireNonNull(item));
+        } else {
             if (space.size() != 0) {
                 Item itemOnTop = space.peek();
                 if (itemOnTop.getShape() == Shape.ROUND) {
                     throw new StoringItemException("Нельзя положить " + item.getName() + " на " + itemOnTop.getName());
                 }
             }
+
             item.setStored(true);
             space.push(item);
             System.out.println("Предмет " + item.getName() + " добавлен");
-        } else {
-            checkStoringConditions(Objects.requireNonNull(item));
         }
     }
 
