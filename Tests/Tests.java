@@ -1,12 +1,16 @@
 import org.junit.jupiter.api.Test;
 import some.Item;
 import some.Storable;
+import some.canvas.SVGWriter;
 import some.containers.Bag;
 import some.containers.Box;
 import some.containers.Shelf;
 import some.exceptions.ItemAlreadyPlacedException;
 import some.exceptions.StoringItemException;
 import some.simple.items.*;
+
+import java.io.FileReader;
+import java.io.FileWriter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,11 +22,11 @@ public class Tests{
         });
         assertThrows(IllegalArgumentException.class, () -> {
             Item ball = new Ball(null, 5, 0, "green");
-        }).printStackTrace();
+        });
 
         assertThrows(StoringItemException.class, () -> {
-            Storable bag = new Bag("Яндекс.Доставка", 0.5, 10);
-            bag.add((Item) bag);
+            Bag bag = new Bag("Яндекс.Доставка", 0.5, 10);
+            bag.add(bag);
         });
         assertThrows(StoringItemException.class, () -> {
             Item ball = new Ball("Баскетбольный мяч", 5, 1, "green");
@@ -47,28 +51,24 @@ public class Tests{
     }
 
     @Test
-    void checkContainerWeight(){
+    void checkContainerWeight() throws StoringItemException{
         Item ball = new Ball("Мяч", 5.5, 4, "green");
         Item bigBall = new Ball("Мячище", 5, 4, "green");
-        Item MyBall = new Ball("Мячик", 5, 1, "green");
-        Storable box = new Box("Яндекс.Доставка", 0.5, 10);
+        Box box = new Box("Яндекс.Доставка", 0.5, 10);
 
         Storable bagDelivery = new Bag("Деливери", 0.5, 10);
 
-        try {
-            box.add(ball);
-            bagDelivery.add((Item) box);
-            double bagDeliveryWeight = bagDelivery.getWeight();
+        box.add(ball);
+        bagDelivery.add(box);
+        double bagDeliveryWeight = bagDelivery.getWeight();
 
-            assertEquals(6., box.getWeight(), 0.0001);
-            assertEquals(6.5, bagDeliveryWeight, 0.0001);
+        assertEquals(6., box.getWeight(), 0.0001);
+        assertEquals(6.5, bagDeliveryWeight, 0.0001);
 
-            assertThrows(StoringItemException.class, ()-> {
-                bagDelivery.add(bigBall);
-            }).printStackTrace();
-        } catch (StoringItemException | ItemAlreadyPlacedException e) {
-            e.printStackTrace();
-        }
+        assertThrows(StoringItemException.class, ()-> {
+            bagDelivery.add(bigBall);
+        }).printStackTrace(System.out);
+
     }
 
     @Test
@@ -90,7 +90,7 @@ public class Tests{
     }
 
     @Test
-    void checkRemoveMethod(){
+    void checkRemoveMethod() {
         Item ball = new Ball("Мяч", 5.5, 4, "green");
         Item magazine = new Magazine("The Rolling Stones", 0.225, 2, "green");
         Item brick = new Brick("Башкирский кирпич", 1.2, 5, "red");
@@ -130,5 +130,10 @@ public class Tests{
         } catch (StoringItemException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void createFile(){
+        new SVGWriter("WoW");
     }
 }
