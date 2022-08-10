@@ -38,4 +38,6 @@ public interface Storable {
         }
         throw new StoringItemException("Предмет не добавлен превышен максимальный вес");
     }
+
+
 }

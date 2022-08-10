@@ -7,7 +7,7 @@ import java.io.IOException;
 public abstract class Item {
 
     private String name, color;
-    private final int size;
+    private final int size, width, height;
     private final double weight;
     private final Shape shape;
     private boolean stored;
@@ -21,6 +21,8 @@ public abstract class Item {
         this.shape = shape;
         this.weight = weight;
         this.size = size;
+        width = size * 10;
+        height = size * 10;
         this.color = color;
         this.stored = false;
     }
@@ -58,6 +60,14 @@ public abstract class Item {
         return size;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public Shape getShape() {
         return shape;
     }
@@ -74,24 +84,15 @@ public abstract class Item {
 
         switch (this.shape){
             case RECTANGLE:
-                svg.drawRect(x, y, getW(), getH(), this.color, "black");
+                svg.drawRect(x, y, getWidth(), getHeight(), this.color, "black");
                 break;
             case FLAT:
-                svg.drawRoundRect(x, y, getW(), getH(), this.color, "black");
+                svg.drawRoundRect(x, y, getWidth(), getHeight(), this.color, "black");
                 break;
             case ROUND:
-                svg.drawEllipse(x, y, getW(), getW(), this.color, "black");
+                svg.drawEllipse(x, y, getWidth(), getHeight(), this.color, "black");
                 break;
         }
-    }
-
-    public int getW() {
-        return this.size * 10;
-
-    }
-
-    public int getH() {
-        return this.size * 5;
     }
 
     @Override
