@@ -9,8 +9,6 @@ import some.exceptions.ItemAlreadyPlacedException;
 import some.exceptions.StoringItemException;
 import some.simple.items.*;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -130,10 +128,5 @@ public class Tests{
         } catch (StoringItemException e) {
             e.printStackTrace();
         }
-    }
-
-    @Test
-    void createFile(){
-        new SVGWriter("WoW");
     }
 }
