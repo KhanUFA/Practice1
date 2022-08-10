@@ -74,29 +74,24 @@ public abstract class Item {
 
         switch (this.shape){
             case RECTANGLE:
-                svg.drawRect(x, y, getW(MULTIPLIER_X), getH(MULTIPLIER_X + 2), this.color, "black");
+                svg.drawRect(x, y, getW(), getH(), this.color, "black");
                 break;
             case FLAT:
-                svg.drawRoundRect(x, y, getW(MULTIPLIER_X + 3), getH(MULTIPLIER_Y), this.color, "black");
+                svg.drawRoundRect(x, y, getW(), getH(), this.color, "black");
                 break;
             case ROUND:
-                svg.drawEllipse(x, y, getW(MULTIPLIER_X), getH(MULTIPLIER_X), this.color, "black");
+                svg.drawEllipse(x, y, getW(), getW(), this.color, "black");
                 break;
         }
     }
 
-    public int getW(int multiplier) {
-        if(multiplier == 0) {
-            return this.size;
-        }
-        return this.size * multiplier;
+    public int getW() {
+        return this.size * 10;
+
     }
 
-    public int getH(int multiplier) {
-        if(multiplier == 0) {
-            return this.size;
-        }
-        return this.size * multiplier;
+    public int getH() {
+        return this.size * 5;
     }
 
     @Override

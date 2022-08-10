@@ -3,9 +3,11 @@ package some.containers;
 import some.Item;
 import some.Shape;
 import some.Storable;
+import some.canvas.SVGWriter;
 import some.exceptions.ItemAlreadyPlacedException;
 import some.exceptions.StoringItemException;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Box extends Item implements Storable {
@@ -70,7 +72,35 @@ public class Box extends Item implements Storable {
     }
 
     @Override
+    public void draw(SVGWriter svg, int x, int y) throws IOException {
+
+        int widthContainer = getW();
+        int posX = x;
+        int posY = widthContainer + y;
+
+        svg.drawRect(x, y, widthContainer, widthContainer, this.getColor(),"grey");
+
+        for (Item item: space.values()) {
+
+            if(posX >= x + widthContainer - 1){
+                posX = x;
+                posY -= item.getH();
+            }
+
+            if(item.getShape() == Shape.ROUND){
+                posX += item.getW() + 2;
+            }
+
+            item.draw(svg, posX, posY - item.getW());
+
+            posX = posX + item.getW();
+        }
+    }
+
+    @Override
     public void checkArguments(String name, Shape shape, double weight, int size, String color) throws IllegalArgumentException {
         Storable.super.checkArguments(name, shape, weight, size, color);
     }
+
+
 }
