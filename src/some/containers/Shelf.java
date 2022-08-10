@@ -12,18 +12,18 @@ import java.util.Objects;
 
 public class Shelf extends Item implements Storable {
     private final Deque<Item> space;
-    private final double MAX_WEIGHT;
+    private final double maxWeight;
 
-    public Shelf(String name, double weight, int maxSize, String color) throws IllegalArgumentException {
-        super(name, Shape.FLAT, weight, maxSize, color);
+    public Shelf(String name, double weight, int maxWeight, String color) throws IllegalArgumentException {
+        super(name, Shape.FLAT, weight, maxWeight, color);
 
-        MAX_WEIGHT = maxSize;
+        this.maxWeight = maxWeight;
         space = new ArrayDeque<>();
     }
 
     @Override
     public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
-        if (item == null || item == this || item.isStored() || !(item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight()))) {
+        if (item == null || item == this || item.isStored() || item.getSize() > this.getSize() || !(item.getWeight() <= maxWeight - (getWeight() + super.getWeight()))) {
             checkStoringConditions(Objects.requireNonNull(item));
         } else {
             if (space.size() != 0) {
