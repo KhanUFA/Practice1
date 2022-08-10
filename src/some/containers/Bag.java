@@ -18,7 +18,7 @@ public class Bag extends Item implements Storable {
     private final int maxWeight;
 
     public Bag(String name, double weight, int maxWeight) throws IllegalArgumentException {
-        super(name, Shape.RECTANGLE, weight, maxWeight, "brown");
+        super(name, Shape.ROUND, weight, maxWeight, "grey");
 
         space = new ArrayList<>();
         this.maxWeight = maxWeight;
@@ -37,7 +37,7 @@ public class Bag extends Item implements Storable {
 
     @Override
     public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
-        if (item == null || item == this || item.isStored() || !(item.getWeight() <= maxWeight - (getWeight() + super.getWeight()))) {
+        if (item == null || item == this || item.isStored()  || item.getSize() > this.getSize() || !(item.getWeight() <= maxWeight - (getWeight() + super.getWeight()))) {
             checkStoringConditions(item);
         } else {
             item.setStored(true);
@@ -79,7 +79,28 @@ public class Bag extends Item implements Storable {
     @Override
     public void draw(SVGWriter svg, int x, int y) throws IOException {
 
+        int widthContainer = getWidth();
+        int heightContainer = getHeight();
+        int posX = x;
+        int posY = heightContainer + y;
 
+        svg.drawEllipse(x, y, widthContainer, heightContainer, this.getColor(),"grey");
+
+        for (Item item: space) {
+
+            if(posX + item.getWidth() >= x + widthContainer - 1){
+                posX = x;
+                posY -= item.getHeight();
+            }
+
+            if(item.getShape() == Shape.ROUND){
+                posX += item.getWidth() + 1;
+            }
+
+            item.draw(svg, posX, posY - item.getHeight());
+
+            posX += item.getWidth() + 2;
+        }
     }
 
     @Override

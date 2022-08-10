@@ -13,12 +13,12 @@ import java.util.*;
 public class Box extends Item implements Storable {
 
     private final Map<String, Item> space;
-    private final int MAX_WEIGHT;
+    private final int maxWeight;
 
-    public Box(String name, double weight, int maxSize) throws IllegalArgumentException {
-        super(name, Shape.RECTANGLE, weight, maxSize, "brown");
+    public Box(String name, double weight, int maxWeight) throws IllegalArgumentException {
+        super(name, Shape.RECTANGLE, weight, maxWeight, "brown");
         space = new HashMap<>();
-        MAX_WEIGHT = maxSize;
+        this.maxWeight = maxWeight;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Box extends Item implements Storable {
 
     @Override
     public void add(Item item) throws ItemAlreadyPlacedException, StoringItemException {
-        if (item == null || item == this || item.isStored() || !(item.getWeight() <= MAX_WEIGHT - (getWeight() + super.getWeight()))) {
+        if (item == null || item == this || item.isStored() || item.getSize() > this.getSize() || !(item.getWeight() <= maxWeight - (getWeight() + super.getWeight()))) {
             checkStoringConditions(item);
         } else {
             item.setStored(true);
@@ -74,7 +74,7 @@ public class Box extends Item implements Storable {
     @Override
     public void draw(SVGWriter svg, int x, int y) throws IOException {
 
-        int widthContainer = getW();
+        int widthContainer = getWidth();
         int posX = x;
         int posY = widthContainer + y;
 
@@ -82,18 +82,18 @@ public class Box extends Item implements Storable {
 
         for (Item item: space.values()) {
 
-            if(posX >= x + widthContainer - 1){
+            if(posX + item.getWidth() >= x + widthContainer - 1){
                 posX = x;
-                posY -= item.getH();
+                posY -= item.getHeight();
             }
 
             if(item.getShape() == Shape.ROUND){
-                posX += item.getW() + 2;
+                posX += item.getWidth() + 1;
             }
 
-            item.draw(svg, posX, posY - item.getW());
+            item.draw(svg, posX, posY - item.getHeight());
 
-            posX = posX + item.getW();
+            posX += item.getWidth() + 2;
         }
     }
 
