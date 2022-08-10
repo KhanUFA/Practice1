@@ -1,5 +1,9 @@
 package some;
 
+import some.canvas.SVGWriter;
+
+import java.io.IOException;
+
 public abstract class Item {
 
     private String name, color;
@@ -7,6 +11,8 @@ public abstract class Item {
     private final double weight;
     private final Shape shape;
     private boolean stored;
+
+    public static final int MULTIPLIER_X = 4, MULTIPLIER_Y = 2;
 
     public Item(String name, Shape shape, double weight, int size, String color) throws IllegalArgumentException{
         checkArguments(name, shape, weight, size, color);
@@ -62,6 +68,35 @@ public abstract class Item {
 
     public void setStored(boolean stored) {
         this.stored = stored;
+    }
+
+    public void draw(SVGWriter svg, int x, int y) throws IOException {
+
+        switch (this.shape){
+            case RECTANGLE:
+                svg.drawRect(x, y, getW(MULTIPLIER_X), getH(MULTIPLIER_X + 2), this.color, "black");
+                break;
+            case FLAT:
+                svg.drawRoundRect(x, y, getW(MULTIPLIER_X + 3), getH(MULTIPLIER_Y), this.color, "black");
+                break;
+            case ROUND:
+                svg.drawEllipse(x, y, getW(MULTIPLIER_X), getH(MULTIPLIER_X), this.color, "black");
+                break;
+        }
+    }
+
+    public int getW(int multiplier) {
+        if(multiplier == 0) {
+            return this.size;
+        }
+        return this.size * multiplier;
+    }
+
+    public int getH(int multiplier) {
+        if(multiplier == 0) {
+            return this.size;
+        }
+        return this.size * multiplier;
     }
 
     @Override

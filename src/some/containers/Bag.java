@@ -3,9 +3,11 @@ package some.containers;
 import some.Item;
 import some.Shape;
 import some.Storable;
+import some.canvas.SVGWriter;
 import some.exceptions.ItemAlreadyPlacedException;
 import some.exceptions.StoringItemException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -71,6 +73,12 @@ public class Bag extends Item implements Storable {
         }
 
         return sumWeight;
+    }
+
+    @Override
+    public void draw(SVGWriter svg, int x, int y) throws IOException {
+        svg.drawRect(x, y, getW(MULTIPLIER_X), getH(MULTIPLIER_X + 5), this.getColor(),"grey");
+
     }
 
     @Override

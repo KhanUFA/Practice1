@@ -1,7 +1,10 @@
 package some;
 
+import some.canvas.SVGWriter;
 import some.exceptions.ItemAlreadyPlacedException;
 import some.exceptions.StoringItemException;
+
+import java.io.IOException;
 
 public interface Storable {
     void add(Item item) throws ItemAlreadyPlacedException, StoringItemException;
@@ -9,6 +12,7 @@ public interface Storable {
     Item get();
     Item search(String name);
     double getWeight();
+    void draw(SVGWriter svg, int x, int y) throws IOException;
 
     default void checkArguments(String name, Shape shape, double weight, int size, String color) throws IllegalArgumentException {
         if (name == null) {
