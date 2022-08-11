@@ -3,15 +3,16 @@ package some.containers;
 import some.Item;
 import some.Shape;
 import some.Storable;
+import some.canvas.SVGWriter;
 import some.exceptions.ItemAlreadyPlacedException;
 import some.exceptions.StoringItemException;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.Objects;
 
 public class Shelf extends Item implements Storable {
-    private final Deque<Item> space;
+    private final ArrayDeque<Item> space;
     private final double maxWeight;
 
     public Shelf(String name, double weight, int maxWeight, String color) throws IllegalArgumentException {
@@ -73,6 +74,34 @@ public class Shelf extends Item implements Storable {
         }
 
         return sumWeight;
+    }
+
+    @Override
+    public void draw(SVGWriter svg, int x, int y) throws IOException {
+
+        ArrayDeque<Item> tempSpace = space.clone();
+        int widthContainer = getWidth(), heightContainer = getHeight();
+        int posX = x;
+        int posY = y - 1;
+
+        svg.drawRect(x, y, widthContainer, heightContainer, this.getColor(),"grey");
+
+        while (!tempSpace.isEmpty()){
+            Item item = tempSpace.pollLast();
+
+            if(item.getShape() == Shape.ROUND){
+                posY -= item.getWidth() + 1;
+            }
+            posY -= item.getHeight() - 1;
+            item.draw(svg, posX + widthContainer / 2 - item.getWidth() / 2, posY);
+
+
+        }
+    }
+
+    @Override
+    public int getHeight() {
+        return getSize() * 2;
     }
 
     @Override
