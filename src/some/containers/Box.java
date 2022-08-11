@@ -82,14 +82,14 @@ public class Box extends Item implements Storable {
 
         for (Item item: space.values()) {
 
-            if(posX + item.getWidth() >= x + widthContainer - 1){
+            if(posX + item.getWidth() >= x + widthContainer - 5){
                 posX = x;
-                posY -= item.getHeight();
+                posY -= 40;
             }
 
-            item.draw(svg, posX, posY - item.getHeight());
+            item.draw(svg, posX, posY - item.getHeight() - 2);
 
-            posX += item.getWidth() + 1;
+            posX += item.getWidth() + 2;
         }
     }
 

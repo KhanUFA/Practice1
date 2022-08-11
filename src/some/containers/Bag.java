@@ -86,17 +86,19 @@ public class Bag extends Item implements Storable {
         int rx = widthContainer / 2, ry = heightContainer / 2;
         int x0 = x + rx, y0 = y + ry;
 
-        svg.drawEllipse(x0, y0 + ry, rx, ry, this.getColor(),"grey");
+        svg.drawEllipse(x0, y0, rx, ry, this.getColor(),"grey");
 
         for (Item item: space) {
-            //Math.pow(posX - x, 2) / Math.pow(rx, 2) + Math.pow(posY - y, 2) / Math.pow(ry, 2) >= 1
-            if(Math.pow(posX - x0, 2) / Math.pow(rx, 2) + Math.pow(posY - y0, 2) / Math.pow(ry, 2) <= 1){
-                posX = x;
-                posY -= item.getHeight();
+
+            while (Math.pow(posX - x0, 2) / Math.pow(rx, 2) + Math.pow(posY - y0, 2) / Math.pow(ry, 2) >= 1) {
+                if (posX > x + widthContainer) {
+                    posX = x;
+                    posY -= item.getHeight() / 2;
+                }
+                posX += item.getWidth();
             }
 
             item.draw(svg, posX, posY - item.getHeight());
-
             posX += item.getWidth() + 2;
         }
     }
