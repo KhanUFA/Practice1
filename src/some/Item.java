@@ -12,7 +12,6 @@ public abstract class Item {
     private final Shape shape;
     private boolean stored;
 
-    public static final int MULTIPLIER_X = 4, MULTIPLIER_Y = 2;
 
     public Item(String name, Shape shape, double weight, int size, String color) throws IllegalArgumentException{
         checkArguments(name, shape, weight, size, color);
@@ -90,7 +89,8 @@ public abstract class Item {
                 svg.drawRoundRect(x, y, getWidth(), getHeight(), this.color, "black");
                 break;
             case ROUND:
-                svg.drawEllipse(x, y, getWidth(), getHeight(), this.color, "black");
+                int radius = getWidth() / 2;
+                svg.drawEllipse(x + radius, y + radius, radius, radius, this.color, "black");
                 break;
         }
     }

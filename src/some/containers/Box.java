@@ -74,11 +74,11 @@ public class Box extends Item implements Storable {
     @Override
     public void draw(SVGWriter svg, int x, int y) throws IOException {
 
-        int widthContainer = getWidth();
+        int widthContainer = getWidth(), heightContainer = getHeight();
         int posX = x;
         int posY = widthContainer + y;
 
-        svg.drawRect(x, y, widthContainer, widthContainer, this.getColor(),"grey");
+        svg.drawRect(x, y, widthContainer, heightContainer, this.getColor(),"grey");
 
         for (Item item: space.values()) {
 
@@ -87,13 +87,9 @@ public class Box extends Item implements Storable {
                 posY -= item.getHeight();
             }
 
-            if(item.getShape() == Shape.ROUND){
-                posX += item.getWidth() + 1;
-            }
-
             item.draw(svg, posX, posY - item.getHeight());
 
-            posX += item.getWidth() + 2;
+            posX += item.getWidth() + 1;
         }
     }
 

@@ -81,21 +81,17 @@ public class Shelf extends Item implements Storable {
 
         ArrayDeque<Item> tempSpace = space.clone();
         int widthContainer = getWidth(), heightContainer = getHeight();
-        int posX = x;
-        int posY = y - 1;
+        int posY = y - 1, posX = x;
 
         svg.drawRect(x, y, widthContainer, heightContainer, this.getColor(),"grey");
 
         while (!tempSpace.isEmpty()){
             Item item = tempSpace.pollLast();
 
-            if(item.getShape() == Shape.ROUND){
-                posY -= item.getWidth() + 1;
-            }
             posY -= item.getHeight() - 1;
-            item.draw(svg, posX + widthContainer / 2 - item.getWidth() / 2, posY);
+            posX = (x + widthContainer / 2) - (item.getWidth() / 2);
 
-
+            item.draw(svg, posX, posY);
         }
     }
 
