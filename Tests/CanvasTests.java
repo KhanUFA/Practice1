@@ -8,7 +8,6 @@ import some.simple.items.Ball;
 import some.simple.items.Brick;
 import some.simple.items.Magazine;
 
-import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -24,7 +23,7 @@ public class CanvasTests {
         Item brick1 = new Brick("Кирпич", 2, 2, "pink");
         Item magazine1 = new Magazine("Журнал", 1, 1, "black");
         Box box = new Box("Яндекс.Доставка", 0.5, 20);
-        Bag bag = new Bag("Delivery", 0.5, 6);
+        Bag bag = new Bag("Delivery", 0.5, 10);
         Shelf shelf = new Shelf("RAJTAN", 1,10,"#CD5C5C");
 
         assertDoesNotThrow(() ->{
@@ -41,7 +40,7 @@ public class CanvasTests {
             box.add(brick);
 
             box.draw(svg, 20, 150);
-            bag.draw(svg, 200, 250);
+            bag.draw(svg, 250, 250);
 
             bag.remove(brick1);
 

@@ -75,19 +75,23 @@ public class Box extends Item implements Storable {
     public void draw(SVGWriter svg, int x, int y) throws IOException {
 
         int widthContainer = getWidth(), heightContainer = getHeight();
-        int posX = x;
-        int posY = widthContainer + y;
+        int posX = x, posY = widthContainer + y;
+        int maxStepY = 0;
 
         svg.drawRect(x, y, widthContainer, heightContainer, this.getColor(),"grey");
 
         for (Item item: space.values()) {
 
+            if(maxStepY < item.getWidth()){
+                maxStepY = item.getHeight();
+            }
             if(posX + item.getWidth() >= x + widthContainer - 5){
                 posX = x;
-                posY -= 40;
+                posY -= maxStepY + 3;
+                maxStepY = 0;
             }
 
-            item.draw(svg, posX, posY - item.getHeight() - 2);
+            item.draw(svg, posX + 3, posY - item.getHeight() - 3);
 
             posX += item.getWidth() + 2;
         }

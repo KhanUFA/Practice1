@@ -22,6 +22,7 @@ public class Bag extends Item implements Storable {
 
         space = new ArrayList<>();
         this.maxWeight = maxWeight;
+        height = size * 5;
     }
 
     @Override
@@ -81,17 +82,17 @@ public class Bag extends Item implements Storable {
 
         int widthContainer = getWidth();
         int heightContainer = getHeight();
-        int posX = x + getWidth() / 2;
-        int posY = heightContainer + y;
+        int posX = x + getWidth() / 2, posY = heightContainer + y;
         int rx = widthContainer / 2, ry = heightContainer / 2;
         int x0 = x + rx, y0 = y + ry;
+        int maxStepY = 0;
 
         svg.drawEllipse(x0, y0, rx, ry, this.getColor(),"grey");
 
         for (Item item: space) {
 
             while (Math.pow(posX - x0, 2) / Math.pow(rx, 2) + Math.pow(posY - y0, 2) / Math.pow(ry, 2) >= 1) {
-                if (posX > x + widthContainer) {
+                if (posX + item.getWidth() > x + widthContainer) {
                     posX = x;
                     posY -= item.getHeight() / 2;
                 }
@@ -101,16 +102,6 @@ public class Bag extends Item implements Storable {
             item.draw(svg, posX, posY - item.getHeight());
             posX += item.getWidth() + 2;
         }
-    }
-
-    @Override
-    public int getWidth() {
-        return super.getWidth() * 2;
-    }
-
-    @Override
-    public int getHeight() {
-        return super.getHeight();
     }
 
     @Override

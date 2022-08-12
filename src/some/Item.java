@@ -7,7 +7,9 @@ import java.io.IOException;
 public abstract class Item {
 
     private String name, color;
-    private final int size, width, height;
+    protected final int size;
+    protected int width;
+    protected int height;
     private final double weight;
     private final Shape shape;
     private boolean stored;

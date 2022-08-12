@@ -20,6 +20,7 @@ public class Shelf extends Item implements Storable {
 
         this.maxWeight = maxWeight;
         space = new ArrayDeque<>();
+        height = maxWeight * 2;
     }
 
     @Override
@@ -93,11 +94,6 @@ public class Shelf extends Item implements Storable {
 
             item.draw(svg, posX, posY);
         }
-    }
-
-    @Override
-    public int getHeight() {
-        return getSize() * 2;
     }
 
     @Override
